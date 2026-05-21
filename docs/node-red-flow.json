@@ -1,0 +1,453 @@
+[
+    {
+        "id": "fb8a5477c54929ba",
+        "type": "tab",
+        "label": "Fluxo 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "tempInject",
+        "type": "inject",
+        "z": "fb8a5477c54929ba",
+        "name": "Temperatura",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "",
+        "payload": "24",
+        "payloadType": "num",
+        "x": 180,
+        "y": 380,
+        "wires": [
+            [
+                "tempFunction"
+            ]
+        ]
+    },
+    {
+        "id": "tempFunction",
+        "type": "function",
+        "z": "fb8a5477c54929ba",
+        "name": "Processar Temperatura",
+        "func": "let ultima = context.get(\"ultima\") || 27;\n\nlet variacao = Math.floor(Math.random() * 3) - 1;\n\nlet temp = ultima + variacao;\n\nif(temp < 24) temp = 24;\nif(temp > 33) temp = 33;\n\ncontext.set(\"ultima\", temp);\n\nmsg.payload = temp;\nmsg.topic = \"Temperatura\";\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 380,
+        "wires": [
+            [
+                "9bec470afa3743eb"
+            ]
+        ]
+    },
+    {
+        "id": "a06bdd1a21b4e650",
+        "type": "ui-template",
+        "z": "fb8a5477c54929ba",
+        "group": "",
+        "page": "",
+        "ui": "",
+        "name": "",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "head": "",
+        "format": "body {\n    background-color: #18181b !important;\n}\n\n.nrdb-ui-card {\n    background-color: #27272a !important;\n    border-radius: 18px !important;\n    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);\n}\n\n.nrdb-ui-text {\n    color: white !important;\n}\n\n.nrdb-ui-widget-label {\n    color: #ffffff !important;\n    font-weight: bold;\n}\n\nmd-toolbar {\n    background-color: #111827 !important;\n}\n\nsvg text {\n    fill: white !important;\n}\n.nrdb-ui-card {\n    padding: 10px !important;\n}",
+        "storeOutMessages": true,
+        "passthru": true,
+        "resendOnRefresh": true,
+        "templateScope": "page:style",
+        "className": "",
+        "x": 150,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "55c95aa7fc4c4ad0",
+        "type": "mqtt in",
+        "z": "fb8a5477c54929ba",
+        "name": "",
+        "topic": "clyvo/temperatura",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "ee86de307a739f37",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 580,
+        "wires": [
+            [
+                "c611702e5c400f63"
+            ]
+        ]
+    },
+    {
+        "id": "9bec470afa3743eb",
+        "type": "mqtt out",
+        "z": "fb8a5477c54929ba",
+        "name": "",
+        "topic": "clyvo/temperatura",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "ee86de307a739f37",
+        "x": 730,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "c611702e5c400f63",
+        "type": "function",
+        "z": "fb8a5477c54929ba",
+        "name": "function 1",
+        "func": "msg.payload = Number(msg.payload);\nmsg.topic = \"Temperatura\";\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 600,
+        "wires": [
+            [
+                "d0d6a2ded2b848c6",
+                "bb65584f49202bbc",
+                "c6387ff70b55ff86",
+                "48fd5417ef236adf"
+            ]
+        ]
+    },
+    {
+        "id": "d0d6a2ded2b848c6",
+        "type": "function",
+        "z": "fb8a5477c54929ba",
+        "name": "Status MQTT",
+        "func": "if(msg.payload >= 30){\n\n    msg.payload = \"⚠️ Ambiente quente para o pet\";\n\n    msg.ui_update = {\n        color: \"#ff5c5c\"\n    };\n\n}\nelse{\n\n    msg.payload = \"✅ Ambiente seguro para o pet\";\n\n    msg.ui_update = {\n        color: \"#7CFC00\"\n    };\n\n}\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 590,
+        "y": 460,
+        "wires": [
+            [
+                "5e004415dc9092a7"
+            ]
+        ]
+    },
+    {
+        "id": "5e004415dc9092a7",
+        "type": "ui-text",
+        "z": "fb8a5477c54929ba",
+        "group": "2d07c3268526194b",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Status Ambiente",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "style": true,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "wrapText": false,
+        "className": "",
+        "value": "payload",
+        "valueType": "msg",
+        "x": 820,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "48fd5417ef236adf",
+        "type": "ui-text",
+        "z": "fb8a5477c54929ba",
+        "group": "2d07c3268526194b",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Temperatura Atual",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "wrapText": false,
+        "className": "",
+        "value": "payload",
+        "valueType": "msg",
+        "x": 550,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "c6387ff70b55ff86",
+        "type": "ui-chart",
+        "z": "fb8a5477c54929ba",
+        "group": "2d07c3268526194b",
+        "name": "",
+        "label": "Histórico Temperatura",
+        "order": 4,
+        "chartType": "line",
+        "category": "topic",
+        "categoryType": "msg",
+        "xAxisLabel": "",
+        "xAxisProperty": "",
+        "xAxisPropertyType": "timestamp",
+        "xAxisType": "time",
+        "xAxisFormat": "",
+        "xAxisFormatType": "auto",
+        "xmin": "",
+        "xmax": "",
+        "yAxisLabel": "",
+        "yAxisProperty": "payload",
+        "yAxisPropertyType": "msg",
+        "ymin": "",
+        "ymax": "",
+        "bins": 10,
+        "action": "append",
+        "stackSeries": false,
+        "pointShape": "circle",
+        "pointRadius": 4,
+        "showLegend": true,
+        "removeOlder": 1,
+        "removeOlderUnit": "3600",
+        "removeOlderPoints": "",
+        "colors": [
+            "#0095ff",
+            "#ff0000",
+            "#ff7f0e",
+            "#2ca02c",
+            "#a347e1",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "textColor": [
+            "#666666"
+        ],
+        "textColorDefault": true,
+        "gridColor": [
+            "#e5e5e5"
+        ],
+        "gridColorDefault": true,
+        "width": 6,
+        "height": 8,
+        "className": "",
+        "interpolation": "linear",
+        "x": 600,
+        "y": 660,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "bb65584f49202bbc",
+        "type": "ui-gauge",
+        "z": "fb8a5477c54929ba",
+        "name": "",
+        "group": "2d07c3268526194b",
+        "order": 3,
+        "value": "payload",
+        "valueType": "msg",
+        "width": 3,
+        "height": 3,
+        "gtype": "gauge-half",
+        "gstyle": "needle",
+        "title": "Temperatura",
+        "alwaysShowTitle": false,
+        "floatingTitlePosition": "top-left",
+        "units": "°C",
+        "icon": "",
+        "prefix": "",
+        "suffix": "",
+        "segments": [
+            {
+                "from": "0",
+                "color": "#5cd65c",
+                "text": "",
+                "textType": "label"
+            },
+            {
+                "from": "4",
+                "color": "#ffc800",
+                "text": "",
+                "textType": "label"
+            },
+            {
+                "from": "7",
+                "color": "#ea5353",
+                "text": "",
+                "textType": "label"
+            }
+        ],
+        "min": "20",
+        "max": "40",
+        "sizeThickness": 16,
+        "sizeGap": 4,
+        "sizeKeyThickness": 8,
+        "styleRounded": true,
+        "styleGlow": false,
+        "className": "",
+        "x": 570,
+        "y": 580,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ee86de307a739f37",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "broker.hivemq.com",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "2d07c3268526194b",
+        "type": "ui-group",
+        "name": "Clyvo Dashboard",
+        "page": "76423ddf7089f529",
+        "width": 6,
+        "height": 1,
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "76423ddf7089f529",
+        "type": "ui-page",
+        "name": "🐾 Clyvo Smart Pet Environment",
+        "ui": "a56ea90efbaafe42",
+        "path": "/page1",
+        "icon": "home",
+        "layout": "grid",
+        "theme": "efd1390a9d85fb70",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Small Desktop",
+                "px": "768",
+                "cols": "9"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "order": 1,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "a56ea90efbaafe42",
+        "type": "ui-base",
+        "name": "My Dashboard",
+        "path": "/dashboard",
+        "appIcon": "",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-notification",
+            "ui-control"
+        ],
+        "showPathInSidebar": false,
+        "headerContent": "page",
+        "navigationStyle": "default",
+        "titleBarStyle": "default",
+        "showReconnectNotification": true,
+        "notificationDisplayTime": 1,
+        "showDisconnectNotification": true,
+        "allowInstall": false
+    },
+    {
+        "id": "efd1390a9d85fb70",
+        "type": "ui-theme",
+        "name": "ui-base.label.theme 2",
+        "colors": {
+            "surface": "#383838",
+            "primary": "#0094ce",
+            "bgPage": "#383838",
+            "groupBg": "#ffffff",
+            "groupOutline": "#cccccc"
+        },
+        "sizes": {
+            "density": "default",
+            "pagePadding": "12px",
+            "groupGap": "12px",
+            "groupBorderRadius": "4px",
+            "widgetGap": "12px"
+        }
+    },
+    {
+        "id": "e1e5b6904581733c",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "@flowfuse/node-red-dashboard": "1.30.2"
+        }
+    }
+]
