@@ -152,7 +152,7 @@ https://www.tinkercad.com/things/eIFX0ZuhmFU-daring-kieran/editel?returnTo=https
 │   └── node-red-flow.json
 │
 ├── images/
-│   ├── dashboard.png
+│   ├── dashboard.jpeg
 │   ├── Ambiente-Seg-Luminosidade-Adequada.jpeg
 │   ├── Ambiente-quente.jpeg
 │   └── Luminosidade-Baixa.jpeg
