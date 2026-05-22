@@ -1,6 +1,6 @@
 # Clyvo Smart Pet Environment
 
-Sistema IoT preventivo para monitoramento de ambiente pet utilizando Arduino e sensores.
+Sistema IoT preventivo para monitoramento de ambiente pet utilizando Arduino, MQTT e Node-RED.
 
 ---
 
@@ -9,6 +9,8 @@ Sistema IoT preventivo para monitoramento de ambiente pet utilizando Arduino e s
 O *Clyvo Smart Pet Environment* foi desenvolvido como uma solução IoT voltada ao monitoramento preventivo do ambiente de pets, auxiliando tutores no acompanhamento contínuo das condições ambientais que podem impactar a saúde e o bem-estar animal.
 
 A proposta faz parte da iniciativa Clyvo Care AI, cujo objetivo é facilitar o acompanhamento da saúde e da vida do pet de forma contínua, preventiva e acessível.
+
+O projeto utiliza sensores conectados ao Arduino para coleta de dados ambientais, comunicação MQTT para transmissão das informações e Node-RED para monitoramento em tempo real através de dashboard IoT.
 
 ---
 
@@ -24,7 +26,9 @@ Monitorar condições ambientais básicas utilizando sensores conectados ao Ardu
 ✅ Monitoramento de luminosidade  
 ✅ Alertas preventivos automáticos  
 ✅ Acionamento de LED em situação de risco  
-✅ Exibição de dados em tempo real no Monitor Serial  
+✅ Comunicação MQTT em tempo real  
+✅ Dashboard IoT utilizando Node-RED  
+✅ Histórico de temperatura  
 ✅ Sistema IoT funcional utilizando Arduino  
 
 ---
@@ -33,6 +37,9 @@ Monitorar condições ambientais básicas utilizando sensores conectados ao Ardu
 
 - Arduino UNO
 - Tinkercad
+- Node-RED
+- MQTT (HiveMQ Broker)
+- Dashboard IoT
 - Linguagem C/C++ (Arduino)
 - Sensor TMP36
 - Sensor LDR
@@ -54,6 +61,12 @@ Monitorar condições ambientais básicas utilizando sensores conectados ao Ardu
 
 ---
 
+# Arquitetura do Projeto
+
+Sensores → Arduino → MQTT → Node-RED → Dashboard IoT
+
+---
+
 # Funcionamento do Sistema
 
 O sistema realiza leituras contínuas de:
@@ -64,8 +77,24 @@ O sistema realiza leituras contínuas de:
 Com base nos valores coletados:
 
 - O LED é acionado em situações de temperatura elevada;
-- Alertas preventivos são exibidos no Monitor Serial;
-- O sistema identifica baixa luminosidade no ambiente.
+- Alertas preventivos são exibidos no dashboard;
+- O sistema identifica baixa luminosidade no ambiente;
+- Os dados são enviados utilizando MQTT;
+- O Node-RED realiza o monitoramento em tempo real.
+
+---
+
+# Dashboard IoT
+
+O Node-RED foi utilizado para criação do dashboard IoT responsável pela exibição em tempo real dos dados coletados pelo sistema.
+
+O dashboard apresenta:
+
+- Temperatura atual
+- Indicadores visuais
+- Alertas preventivos
+- Histórico de temperatura
+- Monitoramento em tempo real
 
 ---
 
@@ -90,4 +119,17 @@ Com base nos valores coletados:
 
 Acesse a simulação do projeto:
 
-(https://www.tinkercad.com/things/eIFX0ZuhmFU-daring-kieran/editel?returnTo=https%3A%2F%2Fwww.tinkercad.com%2Fdashboard&sharecode=IQPALltH_nCpicNBdRjcay95R04LjODOq32z3L-Rodk)
+https://www.tinkercad.com/things/eIFX0ZuhmFU-daring-kieran/editel?returnTo=https%3A%2F%2Fwww.tinkercad.com%2Fdashboard&sharecode=IQPALltH_nCpicNBdRjcay95R04LjODOq32z3L-Rodk
+
+---
+
+# Estrutura do Projeto
+
+```text
+/
+├── code/
+├── docs/
+│   ├── arquitetura.md
+│   └── node-red-flow.json
+├── images/
+└── README.md
