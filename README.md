@@ -67,6 +67,14 @@ Sensores → Arduino → MQTT → Node-RED → Dashboard IoT
 
 ---
 
+# Comunicação MQTT
+
+O protocolo MQTT foi utilizado para comunicação em tempo real entre o Arduino simulado e o Node-RED.
+
+O broker público HiveMQ foi utilizado para transmissão dos dados de temperatura monitorados pelo sistema.
+
+---
+
 # Funcionamento do Sistema
 
 O sistema realiza leituras contínuas de:
@@ -100,17 +108,26 @@ O dashboard apresenta:
 
 # Evidências do Projeto
 
+## Dashboard IoT
+
+![Dashboard](images/dashboard.png)
+
+---
+
 ## Ambiente Seguro
+
 ![Ambiente Seguro](images/Ambiente-Seg-Luminosidade-Adequada.jpeg)
 
 ---
 
 ## Alerta de Temperatura
+
 ![Ambiente Quente](images/Ambiente-quente.jpeg)
 
 ---
 
 ## Baixa Luminosidade
+
 ![Baixa Luminosidade](images/Luminosidade-Baixa.jpeg)
 
 ---
@@ -128,8 +145,16 @@ https://www.tinkercad.com/things/eIFX0ZuhmFU-daring-kieran/editel?returnTo=https
 ```text
 /
 ├── code/
+│   └── clyvo_pet_environment.ino
+│
 ├── docs/
 │   ├── arquitetura.md
 │   └── node-red-flow.json
+│
 ├── images/
+│   ├── dashboard.png
+│   ├── Ambiente-Seg-Luminosidade-Adequada.jpeg
+│   ├── Ambiente-quente.jpeg
+│   └── Luminosidade-Baixa.jpeg
+│
 └── README.md
