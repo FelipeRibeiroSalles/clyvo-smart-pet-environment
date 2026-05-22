@@ -110,7 +110,7 @@ O dashboard apresenta:
 
 ## Dashboard IoT
 
-![Dashboard](images/dashboard.png)
+![Dashboard](images/dashboard.jpeg)
 
 ---
 
